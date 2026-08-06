@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { Link, router } from '@inertiajs/vue3';
+import { LayoutGrid, Users, Anchor, MapPin, ClipboardCheck, CreditCard, FileBarChart, Activity, Sailboat, CalendarClock, CloudSun, ClipboardList } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
-import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
-import NavUser from '@/components/NavUser.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -14,33 +12,54 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, logout } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
+
+
+    // Administrator
+    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
+    { title: 'Users', href: dashboard(), icon: Users },
+    { title: 'Tour Operators', href: dashboard(), icon: Anchor },
+    { title: 'Destinations', href: dashboard(), icon: MapPin },
+    { title: 'Reservations', href: dashboard(), icon: ClipboardCheck },
+    { title: 'Payments', href: dashboard(), icon: CreditCard },
+    { title: 'Reports', href: dashboard(), icon: FileBarChart },
+    { title: 'Activity Logs', href: dashboard(), icon: Activity },
+
+
+    // Tour Operator
+
+    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
+    { title: 'Tour Packages', href: dashboard(), icon: Sailboat },
+    { title: 'Schedules', href: dashboard(), icon: CalendarClock },
+    { title: 'Reservations', href: dashboard(), icon: ClipboardCheck },
+    { title: 'Weather Advisory', href: dashboard(), icon: CloudSun },
+
+
+    // Tourist / User
+
+    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
+    { title: 'Tour Packages', href: dashboard(), icon: Sailboat },
+    { title: 'Destinations', href: dashboard(), icon: MapPin },
+    { title: 'My Bookings', href: dashboard(), icon: ClipboardList },
+    { title: 'Payments', href: dashboard(), icon: CreditCard },
+    { title: 'Weather Advisory', href: dashboard(), icon: CloudSun },
+
+
+
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+
+
+const handleLogout = () => {
+    router.flushAll();
+};
 </script>
 
 <template>
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar collapsible="offcanvas" variant="sidebar">
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
@@ -58,8 +77,17 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
-            <NavUser />
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton as-child>
+                        <Link class="block w-full cursor-pointer" :href="logout()" @click="handleLogout" as="button"
+                            data-test="logout-button">
+                            <LogOut class="mr-2 h-4 w-4" />
+                            <span>Log out</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
         </SidebarFooter>
     </Sidebar>
     <slot />
