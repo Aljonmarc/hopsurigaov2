@@ -10,6 +10,6 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Tourist/Dashboard');
+        return Inertia::render('tourist/Dashboard');
     }
 }

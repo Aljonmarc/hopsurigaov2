@@ -14,11 +14,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     });
 
-    Route::middleware('role:Operator')->group(function () {
+    Route::middleware('role:Operator,Administrator')->group(function () {
         Route::get('operator/dashboard', [OperatorDashboardController::class, 'index'])->name('operator.dashboard');
     });
 
-    Route::middleware('role:Tourist / User')->group(function () {
+    Route::middleware('role:Tourist / User,Administrator')->group(function () {
         Route::get('tourist/dashboard', [TouristDashboardController::class, 'index'])->name('tourist.dashboard');
     });
 });
