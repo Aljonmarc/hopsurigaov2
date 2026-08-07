@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, LayoutGrid, Users, Anchor, MapPin, ClipboardCheck, CreditCard, FileBarChart, Activity, Sailboat, CalendarClock, CloudSun, ClipboardList } from '@lucide/vue';
+import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavMain from '@/components/NavMain.vue';
 import {
@@ -13,45 +14,52 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard, logout } from '@/routes';
+import { useRole } from '@/composables/useRole';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const homeHref = computed(() => {
+    if (isAdmin.value) return '/admin/dashboard';
+    if (isOperator.value) return '/operator/dashboard';
+    if (isTourist.value) return '/tourist/dashboard';
+    return dashboard();
+});
 
+const { isAdmin, isOperator, isTourist } = useRole();
 
-    // Administrator
-    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
-    { title: 'Users', href: dashboard(), icon: Users },
-    { title: 'Tour Operators', href: dashboard(), icon: Anchor },
-    { title: 'Destinations', href: dashboard(), icon: MapPin },
-    { title: 'Reservations', href: dashboard(), icon: ClipboardCheck },
-    { title: 'Payments', href: dashboard(), icon: CreditCard },
-    { title: 'Reports', href: dashboard(), icon: FileBarChart },
-    { title: 'Activity Logs', href: dashboard(), icon: Activity },
-
-
-    // Tour Operator
-
-    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
-    { title: 'Tour Packages', href: dashboard(), icon: Sailboat },
-    { title: 'Schedules', href: dashboard(), icon: CalendarClock },
-    { title: 'Reservations', href: dashboard(), icon: ClipboardCheck },
-    { title: 'Weather Advisory', href: dashboard(), icon: CloudSun },
-
-
-    // Tourist / User
-
-    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
-    { title: 'Tour Packages', href: dashboard(), icon: Sailboat },
-    { title: 'Destinations', href: dashboard(), icon: MapPin },
-    { title: 'My Bookings', href: dashboard(), icon: ClipboardList },
-    { title: 'Payments', href: dashboard(), icon: CreditCard },
-    { title: 'Weather Advisory', href: dashboard(), icon: CloudSun },
-
-
-
+const adminNavItems: NavItem[] = [
+    { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid },
+    { title: 'Users', href: '/admin/users', icon: Users },
+    { title: 'Tour Operators', href: '/admin/tour-operators', icon: Anchor },
+    { title: 'Destinations', href: '/admin/destinations', icon: MapPin },
+    { title: 'Reservations', href: '/admin/reservations', icon: ClipboardCheck },
+    { title: 'Payments', href: '/admin/payments', icon: CreditCard },
+    { title: 'Reports', href: '/admin/reports', icon: FileBarChart },
+    { title: 'Activity Logs', href: '/admin/activity-logs', icon: Activity },
 ];
 
+const operatorNavItems: NavItem[] = [
+    { title: 'Dashboard', href: '/operator/dashboard', icon: LayoutGrid },
+    { title: 'Tour Packages', href: '/operator/tour-packages', icon: Sailboat },
+    { title: 'Schedules', href: '/operator/schedules', icon: CalendarClock },
+    { title: 'Reservations', href: '/operator/reservations', icon: ClipboardCheck },
+    { title: 'Weather Advisory', href: '/operator/weather-advisory', icon: CloudSun },
+];
 
+const touristNavItems: NavItem[] = [
+    { title: 'Dashboard', href: '/tourist/dashboard', icon: LayoutGrid },
+    { title: 'Tour Packages', href: '/tourist/tour-packages', icon: Sailboat },
+    { title: 'Destinations', href: '/tourist/destinations', icon: MapPin },
+    { title: 'My Bookings', href: '/tourist/my-bookings', icon: ClipboardList },
+    { title: 'Payments', href: '/tourist/payments', icon: CreditCard },
+    { title: 'Weather Advisory', href: '/tourist/weather-advisory', icon: CloudSun },
+];
+
+const mainNavItems = computed<NavItem[]>(() => {
+    if (isAdmin.value) return adminNavItems;
+    if (isOperator.value) return operatorNavItems;
+    if (isTourist.value) return touristNavItems;
+    return [];
+});
 
 const handleLogout = () => {
     router.flushAll();
@@ -64,7 +72,7 @@ const handleLogout = () => {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="homeHref">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
