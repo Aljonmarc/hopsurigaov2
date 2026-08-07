@@ -17,14 +17,14 @@ import { dashboard, logout } from '@/routes';
 import { useRole } from '@/composables/useRole';
 import type { NavItem } from '@/types';
 
+const { isAdmin, isOperator, isTourist } = useRole();
+
 const homeHref = computed(() => {
     if (isAdmin.value) return '/admin/dashboard';
     if (isOperator.value) return '/operator/dashboard';
     if (isTourist.value) return '/tourist/dashboard';
     return dashboard();
 });
-
-const { isAdmin, isOperator, isTourist } = useRole();
 
 const adminNavItems: NavItem[] = [
     { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutGrid },
@@ -54,13 +54,6 @@ const touristNavItems: NavItem[] = [
     { title: 'Weather Advisory', href: '/tourist/weather-advisory', icon: CloudSun },
 ];
 
-const mainNavItems = computed<NavItem[]>(() => {
-    if (isAdmin.value) return adminNavItems;
-    if (isOperator.value) return operatorNavItems;
-    if (isTourist.value) return touristNavItems;
-    return [];
-});
-
 const handleLogout = () => {
     router.flushAll();
 };
@@ -81,7 +74,13 @@ const handleLogout = () => {
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <template v-if="isAdmin">
+                <NavMain label="Administrator" :items="adminNavItems" />
+                <NavMain label="Operator" :items="operatorNavItems" />
+                <NavMain label="Tourist / User" :items="touristNavItems" />
+            </template>
+            <NavMain v-else-if="isOperator" label="Operator" :items="operatorNavItems" />
+            <NavMain v-else-if="isTourist" label="Tourist / User" :items="touristNavItems" />
         </SidebarContent>
 
         <SidebarFooter>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import {  LayoutGrid, Menu, Search, Users, Anchor, MapPin, ClipboardCheck, CreditCard, FileBarChart, Activity, Sailboat, CalendarClock, CloudSun, ClipboardList } from '@lucide/vue';
+import { LayoutGrid, Menu, Search, MapPin, CreditCard, Sailboat, CloudSun, ClipboardList } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
@@ -25,17 +25,9 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
-import { toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -54,15 +46,13 @@ const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
 const mainNavItems: NavItem[] = [
-    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
-    { title: 'Tour Packages', href: dashboard(), icon: Sailboat },
-    { title: 'Destinations', href: dashboard(), icon: MapPin },
-    { title: 'My Bookings', href: dashboard(), icon: ClipboardList },
-    { title: 'Payments', href: dashboard(), icon: CreditCard },
-    { title: 'Weather Advisory', href: dashboard(), icon: CloudSun },
-
+    { title: 'Dashboard', href: '/tourist/dashboard', icon: LayoutGrid },
+    { title: 'Tour Packages', href: '/tourist/tour-packages', icon: Sailboat },
+    { title: 'Destinations', href: '/tourist/destinations', icon: MapPin },
+    { title: 'My Bookings', href: '/tourist/my-bookings', icon: ClipboardList },
+    { title: 'Payments', href: '/tourist/payments', icon: CreditCard },
+    { title: 'Weather Advisory', href: '/tourist/weather-advisory', icon: CloudSun },
 ];
-
 </script>
 
 <template>
@@ -100,7 +90,7 @@ const mainNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="dashboard()" class="flex items-center gap-x-2">
+                <Link href="/tourist/dashboard" class="flex items-center gap-x-2">
                     <AppLogo />
                 </Link>
 
