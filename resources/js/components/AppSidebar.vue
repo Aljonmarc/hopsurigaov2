@@ -13,7 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, logout } from '@/routes';
+import {  logout } from '@/routes';
 import { useRole } from '@/composables/useRole';
 import type { NavItem } from '@/types';
 
@@ -23,7 +23,7 @@ const homeHref = computed(() => {
     if (isAdmin.value) return '/admin/dashboard';
     if (isOperator.value) return '/operator/dashboard';
     if (isTourist.value) return '/tourist/dashboard';
-    return dashboard();
+    return '/';
 });
 
 const adminNavItems: NavItem[] = [
